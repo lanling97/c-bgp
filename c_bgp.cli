@@ -4,3 +4,36 @@ net add node 4.5.3.8
 
 net add link 23.9.1.1 4.5.3.8
 net add link 24.3.5.7 4.5.3.8
+
+
+bgp add router 24357 24.3.5.7
+bgp add router 23911 23.9.1.1
+bgp add router 4538  4.5.3.8
+
+
+bgp router 24.3.5.7 
+	add peer 4538 4.5.3.8
+	peer 4.5.3.8 next-hop-self
+	peer 4.5.3.8 up
+	exit
+
+bgp router 23.9.1.1 
+	add peer 4538 4.5.3.8
+	peer 4.5.3.8 next-hop-self
+	peer 4.5.3.8 up
+	exit
+
+bgp router 4.5.3.8
+	add peer 23911 23.9.1.1
+	peer 23.9.1.1 next-hop-self
+	peer 23.9.1.1 up
+	add peer 24357 4.5.3.8
+	peer 4.5.3.8 next-hop-self
+	peer 4.5.3.8 up
+	exit
+
+
+bgp router 24.3.5.7 add network 218.192.0.0/24
+bgp router 4.5.3.8 add network 121.248.0.0/20
+
+sim run
